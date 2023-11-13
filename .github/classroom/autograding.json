@@ -1,0 +1,74 @@
+{
+  "tests": [
+    {
+      "name": "test 1",
+      "setup": "sudo -H pip3 install numpy nltk pandas scikit-learn",
+      "run": "python3 .test_1.py",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 8,
+      "points": 50
+    },
+    {
+      "name": "test 2",
+      "setup": "sudo -H pip3 install numpy nltk pandas scikit-learn",
+      "run": "python3 .test_2.py",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 8,
+      "points": 20
+    },
+    {
+      "name": "test 3",
+      "setup": "sudo -H pip3 install numpy nltk pandas scikit-learn",
+      "run": "python3 .test_3.py",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 8,
+      "points": 10
+    },
+    {
+      "name": "test 4",
+      "setup": "sudo -H pip3 install numpy nltk pandas scikit-learn",
+      "run": "python3 .test_4.py",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 8,
+      "points": 10
+    },
+    {
+      "name": "test 5",
+      "setup": "sudo -H pip3 install numpy nltk pandas scikit-learn",
+      "run": "python3 .test_5.py",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 8,
+      "points": 10
+    },
+    {
+      "name": "test 6",
+      "setup": "sudo -H pip3 install numpy nltk pandas scikit-learn",
+      "run": "python3 .test_6.py",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 8,
+      "points": 10
+    },
+    {
+      "name": "test 7",
+      "setup": "sudo -H pip3 install numpy nltk pandas scikit-learn",
+      "run": "python3 .test_7.py",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 8,
+      "points": 0
+    }
+  ]
+}
