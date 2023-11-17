@@ -16,8 +16,8 @@ class NaiveBayesFilter:
         self.training_set = pd.read_csv('train.csv', sep=',', header=0, names=['v1', 'v2'], encoding = 'utf-8')
         self.test_set = pd.read_csv(self.test_set_path, sep=',', header=0, names=['v1', 'v2'], encoding = 'utf-8')
 
-
-    def data_cleaning(self):
+    # Function for data preprocessing, including Normalization, lemmazation and stemming
+    def data_cleaning(self): # output: spam/ham dataframe, vocab/dictionary, 
         # Normalization
         # Replace addresses (hhtp, email), numbers (plain, phone), money symbols
         # Remove the stop-words
@@ -39,7 +39,8 @@ class NaiveBayesFilter:
         # Separate the spam and ham dataframes
         pass
 
-    def fit_bayes(self):
+    # Function for Naive Bayes algorithm
+    def fit_bayes(self): # output: p_spam, p_ham - probability that SMS messages that are spam or ham
         # Calculate P(Spam) and P(Ham)
         
         # Calculate Nspam, Nham and Nvocabulary
@@ -49,12 +50,14 @@ class NaiveBayesFilter:
 
         # Calculate P(wi|Spam) and P(wi|Ham)
 
+    # Trains the cleaned data to get a Naive Bayes model
     def train(self):
         self.read_csv()
         self.data_cleaning()
         self.fit_bayes()
     
-    def sms_classify(self, message):
+    # Function to classify a single SMS text as spam or ham
+    def sms_classify(self, message): # output: none. whether a message is ham or spam. maybe do fit_bayes here
         '''
         classifies a single message as spam or ham
         Takes in as input a new sms (w1, w2, ..., wn),
@@ -72,12 +75,14 @@ class NaiveBayesFilter:
         #     return 'needs human classification'
         pass
 
+    # Function to classify all the texts in the validation or test dataset
     def classify_test(self):
         '''
         Calculate the accuracy of the algorithm on the test set and returns 
         the accuracy as a percentage.
         '''
-        accuracy = 0
+        # need to do bayes on each 
+        accuracy = 99
         return accuracy
 
 
