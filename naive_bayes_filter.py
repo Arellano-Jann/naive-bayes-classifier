@@ -110,8 +110,8 @@ class NaiveBayesFilter:
         p_ham_given_message = self.p_ham * prod(fun('ham'))
         p_spam_given_message = self.p_spam * prod(fun('spam'))
         
-        print('ham probability', p_ham_given_message)
-        print('spam probability', p_spam_given_message)
+        # print('ham probability', p_ham_given_message)
+        # print('spam probability', p_spam_given_message)
 
         if p_ham_given_message > p_spam_given_message:
             return 'ham'
@@ -127,12 +127,16 @@ class NaiveBayesFilter:
         the accuracy as a percentage.
         '''
         # need to do bayes on each 
-        accuracy = 99
+        accuracy = 0
         self.train()
-        self.sms_classify('08714712388 between 10am-7pm Cost 10p')
-        # print('training\n', self.training_set)
-        # print('test\n', self.test_set)
-        return accuracy
+        # self.sms_classify('08714712388 between 10am-7pm Cost 10p')
+        # print(self.test_set)
+        for index, row in self.test_set.iterrows():
+            # print(row['v1'], row['v2'])
+            classification = self.sms_classify(row['v2'])
+            if classification == row['v1']: # then accurate
+                accuracy += 1
+        return accuracy / len(self.test_set) * 100
 
 
 if __name__ == '__main__':
