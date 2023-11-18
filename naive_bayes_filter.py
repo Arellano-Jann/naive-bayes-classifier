@@ -148,7 +148,7 @@ class NaiveBayesFilter:
     #     Calculate the accuracy of the algorithm on the test set and returns 
     #     the accuracy as a percentage.
     #     '''
-    #     for alpha in range(0,2):
+    #     for alpha in np.arange(0.0, 1.0, 0.001, dtype=float):
     #         accuracy = 0
     #         self.alpha = alpha
     #         self.train()
