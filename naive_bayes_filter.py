@@ -16,6 +16,9 @@ class NaiveBayesFilter:
         
         self.probability_word_spam = None # given probability that a word is spam
         self.probability_word_ham = None
+        
+        # Laplace smoothing parameter
+        self.alpha = 0.05
 
     def read_csv(self):
         self.training_set = pd.read_csv('train.csv', sep=',', header=0, names=['v1', 'v2'], encoding = 'utf-8')
@@ -25,10 +28,11 @@ class NaiveBayesFilter:
     # Replace addresses (hhtp, email), numbers (plain, phone), money symbols
     def preprocess(self, text):
         text = text.lower() 
-        text = re.sub(r'\S+@\S+|http\S+|[^\w\s]|\d+', '', text) # email addresses, URL (http), symbols, digits removal
+        text = re.sub('\W', ' ', text)
+        # text = re.sub(r'\S+@\S+|http\S+|[^\w\s]|\d+', '', text) # email addresses, URL (http), symbols, digits removal
         # text = re.sub(r'[^a-zA-Z]', '', text) # Remove anything that is not a letter # might need to manually remove addresses and url's tho
         
-        text = normalize('NFKD', text) # strip unicode
+        # text = normalize('NFKD', text) # strip unicode
         return text
     
     # Function for data preprocessing, including Normalization, lemmazation and stemming
@@ -67,9 +71,6 @@ class NaiveBayesFilter:
         n_ham_words = sum(calc_words(ham_df))
         n_vocab = len(self.vocabulary)
         # print('p_spam', p_spam, '\np_ham', p_ham, '\nn_spam_words', (n_spam_words), '\nn_ham_words', (n_ham_words), '\nn_vocab', (n_vocab))
-        
-        # Laplace smoothing parameter
-        alpha = 1
 
         # Calculate P(wi|Spam) and P(wi|Ham)
         # calculate the probability that a word is a spam or ham
@@ -77,10 +78,10 @@ class NaiveBayesFilter:
         self.probability_word_ham = {word:0 for word in self.vocabulary} # this will be used to calculate whether a msg is spam
         for word in self.vocabulary:
             n_word_given_spam = spam_df[word].sum() # this will take the sum of a single word in all spam msgs # basically, the number of times it appears in all spams
-            self.probability_word_spam[word] = (n_word_given_spam + alpha) / (n_spam_words + alpha * n_vocab) # this will calculate the probabilty that a word is actually spam
+            self.probability_word_spam[word] = (n_word_given_spam + self.alpha) / (n_spam_words + self.alpha * n_vocab) # this will calculate the probabilty that a word is actually spam
             
             n_word_given_ham = ham_df[word].sum() # this will take the sum of a single word in all ham msgs # basically, the number of times it appears in all hams
-            self.probability_word_ham[word] = (n_word_given_ham + alpha) / (n_ham_words + alpha * n_vocab) # this will calculate the probabilty that a word is actually ham
+            self.probability_word_ham[word] = (n_word_given_ham + self.alpha) / (n_ham_words + self.alpha * n_vocab) # this will calculate the probabilty that a word is actually ham
         
             
 
@@ -100,6 +101,8 @@ class NaiveBayesFilter:
         compares them and outcomes whether the message is spam or not.
         '''
         message = self.preprocess(message).split()
+        # message = re.sub('\W', ' ', message)
+        # message = message.lower().split()
         
         def fun(msg_type):
             for word in message:
@@ -118,6 +121,7 @@ class NaiveBayesFilter:
         elif p_spam_given_message > p_ham_given_message:
             return 'spam'
         else:
+            # print('needs human classification')
             return 'needs human classification'
 
     # Function to classify all the texts in the validation or test dataset
@@ -137,6 +141,25 @@ class NaiveBayesFilter:
             if classification == row['v1']: # then accurate
                 accuracy += 1
         return accuracy / len(self.test_set) * 100
+    
+    # # Bruteforce alpha
+    # def classify_test(self):
+    #     '''
+    #     Calculate the accuracy of the algorithm on the test set and returns 
+    #     the accuracy as a percentage.
+    #     '''
+    #     for alpha in range(0,2):
+    #         accuracy = 0
+    #         self.alpha = alpha
+    #         self.train()
+    #         # self.sms_classify('08714712388 between 10am-7pm Cost 10p')
+    #         # print(self.test_set)
+    #         for index, row in self.test_set.iterrows():
+    #             # print(row['v1'], row['v2'])
+    #             classification = self.sms_classify(row['v2'])
+    #             if classification == row['v1']: # then accurate
+    #                 accuracy += 1
+    #         print(alpha, accuracy / len(self.test_set) * 100)
 
 
 if __name__ == '__main__':
